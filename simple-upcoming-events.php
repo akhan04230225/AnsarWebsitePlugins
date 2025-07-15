@@ -128,13 +128,17 @@ function sue_upcoming_events_shortcode( $atts ) {
       $url   = get_post_meta( get_the_ID(), '_sue_url', true ) ?: get_permalink();
       $start = get_post_meta( get_the_ID(), '_sue_start', true );
       $end   = get_post_meta( get_the_ID(), '_sue_end', true );
+
+      // Format dates as mm/dd/yyyy and 12-hour time with AM/PM
+      $start_fmt = $start ? date( 'm/d/Y g:i A', strtotime( $start ) ) : '';
+      $end_fmt   = $end   ? date( 'm/d/Y g:i A', strtotime( $end ) )   : '';
     ?>
       <li class="sue-item">
-        <a href="<?php echo esc_url( $url ); ?>" class="sue-title"><?php the_title(); ?></a>
+        <a href="<?php echo esc_url( $url ); ?>" class="sue-title" target="_blank" rel="noopener"><?php the_title(); ?></a>
         <?php if ( $start || $end ): ?>
           <div class="sue-dates">
-            <?php if ( $start ): ?><span class="sue-start"><?php echo esc_html( $start ); ?></span><?php endif; ?>
-            <?php if ( $end ): ?><span class="sue-end"> - <?php echo esc_html( $end ); ?></span><?php endif; ?>
+            <?php if ( $start ): ?><span class="sue-start"><?php echo esc_html( $start_fmt ); ?></span><?php endif; ?>
+            <?php if ( $end ): ?><span class="sue-end"> - <?php echo esc_html( $end_fmt ); ?></span><?php endif; ?>
           </div>
         <?php endif; ?>
         <?php if ( $desc ): ?>
