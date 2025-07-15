@@ -136,7 +136,6 @@ function sue_upcoming_events_shortcode( $atts ) {
   if ( ! $q->have_posts() ) return '<div class="sue-events-none">No upcoming events.</div>';
   ob_start(); ?>
   <div class="sue-events">
-    <div class="sue-header">✕</div>
     <ul class="sue-list">
     <?php while( $q->have_posts() ) : $q->the_post();
       $desc    = get_post_meta( get_the_ID(), '_sue_description', true );
