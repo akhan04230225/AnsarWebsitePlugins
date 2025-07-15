@@ -47,9 +47,29 @@ function sue_render_meta_box( $post ) {
 
 // 3) Save Meta
 function sue_save_event_details( $post_id ) {
-  if ( ! isset($_POST['sue_nonce']) || ! wp_verify_nonce( $_POST['sue_nonce'], 'sue_save_details' ) ) return;
-  update_post_meta( $post_id, '_sue_description', sanitize_textarea_field( $_POST['sue_description'] ) );
-  update_post_meta( $post_id, '_sue_url', esc_url_raw( $_POST['sue_url'] ) );
+  if ( ! isset( $_POST['sue_nonce'] ) ||
+       ! wp_verify_nonce( $_POST['sue_nonce'], 'sue_save_details' ) ) {
+    return;
+  }
+
+  if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+    return;
+  }
+
+  if ( ! current_user_can( 'edit_post', $post_id ) ) {
+    return;
+  }
+
+  $desc = isset( $_POST['sue_description'] )
+    ? sanitize_textarea_field( $_POST['sue_description'] )
+    : '';
+
+  $url  = isset( $_POST['sue_url'] )
+    ? esc_url_raw( $_POST['sue_url'] )
+    : '';
+
+  update_post_meta( $post_id, '_sue_description', $desc );
+  update_post_meta( $post_id, '_sue_url', $url );
 }
 add_action( 'save_post_sue_event', 'sue_save_event_details' );
 
