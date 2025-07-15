@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Simple Upcoming Events
- * Description: Add events (title, description, URL) and display the 3 most-recent in a dark, card-style list via [upcoming_events].
- * Version:     1.2
+ * Description: Add events (title, description, URL or page link) and display the 3 most-recent in a dark, card-style list via [upcoming_events].
+ * Version:     1.3
  * Author:      You
  */
 
@@ -33,8 +33,9 @@ add_action( 'add_meta_boxes', 'sue_add_meta_boxes' );
 
 function sue_render_meta_box( $post ) {
   wp_nonce_field( 'sue_save_details', 'sue_nonce' );
-  $desc  = get_post_meta( $post->ID, '_sue_description', true );
-  $url   = get_post_meta( $post->ID, '_sue_url', true );
+  $desc    = get_post_meta( $post->ID, '_sue_description', true );
+  $url     = get_post_meta( $post->ID, '_sue_url', true );
+  $page_id = get_post_meta( $post->ID, '_sue_page_id', true );
   $start = get_post_meta( $post->ID, '_sue_start', true );
   $end   = get_post_meta( $post->ID, '_sue_end', true );
   ?>
@@ -48,8 +49,17 @@ function sue_render_meta_box( $post ) {
      <textarea id="sue_description" name="sue_description" rows="4" maxlength="75" style="width:100%;"><?php echo esc_textarea( $desc ); ?></textarea><br>
      <span id="sue_desc_counter"></span>
   </p>
+  <p><label>Link to Page:</label><br>
+     <?php wp_dropdown_pages([
+       'name'             => 'sue_page_id',
+       'show_option_none' => '&mdash; Select Page &mdash;',
+       'option_none_value' => '0',
+       'selected'         => intval( $page_id ),
+     ]); ?>
+  </p>
   <p><label>Link (URL):</label><br>
      <input type="url" name="sue_url" style="width:100%;" value="<?php echo esc_attr( $url ); ?>">
+     <br><em>Leave blank if selecting a page above.</em>
   </p>
   <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -94,6 +104,10 @@ function sue_save_event_details( $post_id ) {
     ? esc_url_raw( $_POST['sue_url'] )
     : '';
 
+  $page_id = isset( $_POST['sue_page_id'] )
+    ? intval( $_POST['sue_page_id'] )
+    : 0;
+
   $start = isset( $_POST['sue_start'] )
     ? sanitize_text_field( $_POST['sue_start'] )
     : '';
@@ -104,6 +118,7 @@ function sue_save_event_details( $post_id ) {
 
   update_post_meta( $post_id, '_sue_description', $desc );
   update_post_meta( $post_id, '_sue_url', $url );
+  update_post_meta( $post_id, '_sue_page_id', $page_id );
   update_post_meta( $post_id, '_sue_start', $start );
   update_post_meta( $post_id, '_sue_end', $end );
 }
@@ -124,8 +139,13 @@ function sue_upcoming_events_shortcode( $atts ) {
     <div class="sue-header">✕</div>
     <ul class="sue-list">
     <?php while( $q->have_posts() ) : $q->the_post();
-      $desc  = get_post_meta( get_the_ID(), '_sue_description', true );
-      $url   = get_post_meta( get_the_ID(), '_sue_url', true ) ?: get_permalink();
+      $desc    = get_post_meta( get_the_ID(), '_sue_description', true );
+      $page_id = intval( get_post_meta( get_the_ID(), '_sue_page_id', true ) );
+      $url     = get_post_meta( get_the_ID(), '_sue_url', true );
+      if ( $page_id ) {
+        $url = get_permalink( $page_id );
+      }
+      $url = $url ?: get_permalink();
       $start = get_post_meta( get_the_ID(), '_sue_start', true );
       $end   = get_post_meta( get_the_ID(), '_sue_end', true );
 
