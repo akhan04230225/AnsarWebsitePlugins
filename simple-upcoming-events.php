@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Upcoming Events
  * Description: Add events (title, description, URL or page link) and display the 3 most-recent in a dark, card-style list via [upcoming_events].
- * Version:     1.3
+ * Version:     1.4
  * Author:      You
  */
 
@@ -171,3 +171,15 @@ function sue_upcoming_events_shortcode( $atts ) {
   return ob_get_clean();
 }
 add_shortcode( 'upcoming_events', 'sue_upcoming_events_shortcode' );
+
+// 5) Enqueue plugin styles
+function sue_enqueue_styles() {
+  if ( is_admin() ) return;
+  wp_enqueue_style(
+    'simple-upcoming-events',
+    plugin_dir_url( __FILE__ ) . 'simple-upcoming-events.css',
+    [],
+    '1.0'
+  );
+}
+add_action( 'wp_enqueue_scripts', 'sue_enqueue_styles' );
