@@ -1,14 +1,26 @@
 .sue-events {
   background: #e2e2e2;
-  padding: 0px;
   border-radius: 12px;
   width: 100%;
-  box-sizing: border-box;
+  /*box-sizing: border-box;*/
   color: #fff;
   font-family: sans-serif;
-  display: inline-block;
-  vertical-align: top;
+  /*display: inline-block;*/
+  display: flex;
+  flex-direction: column;      /* stack each card vertically */
+  align-items: center;         /* center them left‑to‑right */
+  justify-content: flex-start; /* push everything to the top */
+  
+  /* remove any built‑in spacing above your cards */
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
+
+.sue-events .sue-item > .sue-list {
+  display: block;
+  text-align: left;         /* keep the text flush left inside each card */
+}
+
 
 /* top "X" icon */
 .sue-header {
@@ -29,8 +41,11 @@
   background: #333;
   border: 1px solid #444;
   border-radius: 8px;
-  margin-bottom: 8px;
   overflow: hidden;
+  width: 100%;              /* full width of the parent flex line */
+  max-width: 300px;         /* cap it so it doesn’t stretch too wide */
+  margin-bottom: 16px;      /* gutter between cards */
+  box-sizing: border-box; 
 }
 
 /* title */
