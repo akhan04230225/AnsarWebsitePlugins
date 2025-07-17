@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Upcoming Events
  * Description: Add events (title, description, URL or page link) and display the 3 most-recent in a dark, card-style list via [upcoming_events].
- * Version:     1.7
+ * Version:     1.8
  * Author:      You
  */
 
