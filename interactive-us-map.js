@@ -31,7 +31,7 @@
       });
       marker.addListener('mouseover', function(){ marker.setIcon(glowIcon); });
       marker.addListener('mouseout', function(){ marker.setIcon(normalIcon); });
-      marker.addListener('click', function(){ window.location.href = c.url; });
+      marker.addListener('click', function(){ window.open(c.url, '_blank'); });
     });
   }
   if (window.google && window.google.maps) {
