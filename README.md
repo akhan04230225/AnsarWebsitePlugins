@@ -18,4 +18,4 @@ In the WordPress admin area, navigate to **Interactive US Map** to:
 - Add new cities with latitude, longitude and a page link.
 - Remove existing cities.
 
-When rendered, hovering a pin causes it to glow. Clicking a pin will take visitors to the page associated with that city.
+When rendered, hovering a pin causes it to glow. Clicking a pin opens the page associated with that city in a new tab.
