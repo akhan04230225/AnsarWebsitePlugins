@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Interactive US Map
  * Description: Render a contiguous US map with custom city pins via [interactive_us_map].
- * Version:     1.0
+ * Version:     2.0
  * Author:      You
  */
 
