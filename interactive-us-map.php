@@ -153,7 +153,7 @@ function iusm_render_map() {
     wp_enqueue_style( 'interactive-us-map', plugin_dir_url( __FILE__ ) . 'interactive-us-map.css', [], '1.0' );
     $handle = 'google-maps';
     if ( ! wp_script_is( $handle, 'enqueued' ) ) {
-        $src = 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr( $api_key ) . '&callback=initIUSMMap';
+        $src = 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr( $api_key );
         wp_enqueue_script( $handle, $src, [], null, true );
     }
     wp_enqueue_script( 'iusm-map', plugin_dir_url( __FILE__ ) . 'interactive-us-map.js', [ $handle ], '1.0', true );
