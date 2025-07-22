@@ -71,7 +71,7 @@ function iusm_settings_page() {
         <h1>Interactive US Map</h1>
 
         <h2>API Key</h2>
-        <form method="post">
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=iusm' ) ); ?>">
             <?php wp_nonce_field( 'iusm_save_api' ); ?>
             <p>
                 <label for="iusm_api_key">Google Maps API Key:</label>
@@ -107,7 +107,7 @@ function iusm_settings_page() {
         </table>
 
         <h2>Add New City</h2>
-        <form method="post">
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=iusm' ) ); ?>">
             <?php wp_nonce_field( 'iusm_save_city' ); ?>
             <table class="form-table" style="max-width:600px;">
                 <tr>
