@@ -233,12 +233,20 @@
     }
 
     .leadership-container .accordion-panel {
-      min-height: 140px;
+      flex: 0 0 auto;
+      min-height: 220px;
+      align-items: flex-start;
     }
 
     .leadership-container .accordion-panel .title {
       font-size: 1.4rem;
       padding: 15px 10px;
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+
+    .leadership-container .accordion-panel.active {
+      flex: 0 0 auto;
     }
 
     .leadership-container .accordion-panel.active .title {
