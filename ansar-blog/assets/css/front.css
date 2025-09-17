@@ -1,0 +1,42 @@
+.ansar-blog-wrapper {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.ansar-blog-wrapper .text-large {
+    font-size: 18px;
+}
+
+.ansar-blog-wrapper .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ansar-blog-wrapper .ansar-blog-card img,
+.ansar-blog-wrapper .ansar-blog-hero img {
+    display: block;
+}
+
+.ansar-blog-wrapper [data-ansar-search-close] {
+    font-size: 1.75rem;
+    line-height: 1;
+}
+
+.ansar-blog-wrapper .ansar-blog-search button:focus,
+.ansar-blog-wrapper .ansar-blog-subscribe button:focus,
+.ansar-blog-wrapper [data-ansar-search-close]:focus {
+    outline: 2px solid #14b8a6;
+    outline-offset: 2px;
+}
+
+.ansar-blog-all-categories .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ansar-blog-all-categories {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.ansar-blog-all-categories .text-large {
+    font-size: 18px;
+}

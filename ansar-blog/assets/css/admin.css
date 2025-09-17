@@ -1,0 +1,7 @@
+.ansar-blog-admin .form-table th {
+    width: 200px;
+}
+
+.ansar-blog-admin .ansar-blog-form textarea.large-text {
+    max-width: 600px;
+}
