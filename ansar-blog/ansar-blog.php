@@ -23,6 +23,7 @@ class Ansar_Community_Blog {
         add_action( 'init', [ __CLASS__, 'register_post_type_and_taxonomy' ] );
         add_action( 'admin_menu', [ __CLASS__, 'register_admin_menu' ] );
         add_action( 'admin_post_ansar_blog_save_article', [ __CLASS__, 'handle_save_article' ] );
+        add_action( 'admin_post_ansar_blog_feature_article', [ __CLASS__, 'handle_feature_article' ] );
         add_action( 'admin_enqueue_scripts', [ __CLASS__, 'enqueue_admin_assets' ] );
 
         add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_frontend_assets' ] );
@@ -123,6 +124,8 @@ class Ansar_Community_Blog {
                 <div class="notice notice-success"><p><?php esc_html_e( 'Article saved successfully.', 'ansar-community-blog' ); ?></p></div>
             <?php elseif ( 'error' === $message_code ) : ?>
                 <div class="notice notice-error"><p><?php esc_html_e( 'There was a problem saving the article. Please review the form and try again.', 'ansar-community-blog' ); ?></p></div>
+            <?php elseif ( 'featured' === $message_code ) : ?>
+                <div class="notice notice-success"><p><?php esc_html_e( 'Featured article updated.', 'ansar-community-blog' ); ?></p></div>
             <?php endif; ?>
 
             <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="ansar-blog-form">
@@ -204,6 +207,7 @@ class Ansar_Community_Blog {
                         <th><?php esc_html_e( 'Category', 'ansar-community-blog' ); ?></th>
                         <th><?php esc_html_e( 'Featured?', 'ansar-community-blog' ); ?></th>
                         <th><?php esc_html_e( 'Date', 'ansar-community-blog' ); ?></th>
+                        <th><?php esc_html_e( 'Actions', 'ansar-community-blog' ); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -218,10 +222,22 @@ class Ansar_Community_Blog {
                             <td><?php echo esc_html( implode( ', ', $term_names ) ); ?></td>
                             <td><?php echo $is_featured ? '&#10003;' : '&mdash;'; ?></td>
                             <td><?php echo esc_html( get_the_date( '', $post ) ); ?></td>
+                            <td>
+                                <?php if ( $is_featured ) : ?>
+                                    <button type="button" class="button button-secondary" disabled><?php esc_html_e( 'Currently Featured', 'ansar-community-blog' ); ?></button>
+                                <?php else : ?>
+                                    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+                                        <?php wp_nonce_field( 'ansar_blog_feature_article', 'ansar_blog_feature_nonce' ); ?>
+                                        <input type="hidden" name="action" value="ansar_blog_feature_article">
+                                        <input type="hidden" name="post_id" value="<?php echo esc_attr( $post->ID ); ?>">
+                                        <button type="submit" class="button button-primary"><?php esc_html_e( 'Set as Featured', 'ansar-community-blog' ); ?></button>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <tr><td colspan="4"><?php esc_html_e( 'No articles available yet.', 'ansar-community-blog' ); ?></td></tr>
+                    <tr><td colspan="5"><?php esc_html_e( 'No articles available yet.', 'ansar-community-blog' ); ?></td></tr>
                 <?php endif; ?>
                 </tbody>
             </table>
@@ -321,6 +337,29 @@ class Ansar_Community_Blog {
         self::notify_subscribers( $post_id );
 
         $redirect = add_query_arg( 'ansar_blog_message', 'success', admin_url( 'admin.php?page=ansar-community-blog' ) );
+        wp_safe_redirect( $redirect );
+        exit;
+    }
+
+    public static function handle_feature_article() {
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            wp_die( __( 'You do not have permission to perform this action.', 'ansar-community-blog' ) );
+        }
+
+        check_admin_referer( 'ansar_blog_feature_article', 'ansar_blog_feature_nonce' );
+
+        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : 0;
+
+        if ( ! $post_id || self::POST_TYPE !== get_post_type( $post_id ) ) {
+            $redirect = add_query_arg( 'ansar_blog_message', 'error', admin_url( 'admin.php?page=ansar-community-blog' ) );
+            wp_safe_redirect( $redirect );
+            exit;
+        }
+
+        update_post_meta( $post_id, self::FEATURED_META_KEY, 1 );
+        self::unset_featured_from_other_articles( $post_id );
+
+        $redirect = add_query_arg( 'ansar_blog_message', 'featured', admin_url( 'admin.php?page=ansar-community-blog' ) );
         wp_safe_redirect( $redirect );
         exit;
     }
