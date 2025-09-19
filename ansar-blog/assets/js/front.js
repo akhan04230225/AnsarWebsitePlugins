@@ -87,15 +87,22 @@
         var closeButton = searchResults.querySelector('[data-ansar-search-close]');
         var resultsContainer = searchResults.querySelector('[data-ansar-search-container]');
         var searchInput = searchForm.querySelector('input[name="s"]');
+        var recentHeading = document.querySelector('[data-ansar-recent-heading]');
 
         function showResults() {
             recentWrapper.classList.add('hidden');
             searchResults.classList.remove('hidden');
+            if (recentHeading) {
+                recentHeading.classList.add('hidden');
+            }
         }
 
         function hideResults() {
             searchResults.classList.add('hidden');
             recentWrapper.classList.remove('hidden');
+            if (recentHeading) {
+                recentHeading.classList.remove('hidden');
+            }
             if (resultsContainer) {
                 resultsContainer.innerHTML = '';
             }

@@ -471,7 +471,7 @@ class Ansar_Community_Blog {
                 <section class="bg-white shadow-soft">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                         <div class="text-center mb-8">
-                            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 font-serif mb-2"><?php esc_html_e( 'Community Blog', 'ansar-community-blog' ); ?></h2>
+                            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 font-serif mb-2"><?php esc_html_e( 'Ansar Blog', 'ansar-community-blog' ); ?></h2>
                             <p class="text-xl text-gray-600"><?php esc_html_e( 'Stories, insights, and updates from our community', 'ansar-community-blog' ); ?></p>
                         </div>
                         <?php if ( $featured_article ) :
@@ -526,7 +526,7 @@ class Ansar_Community_Blog {
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-2">
                         <div class="flex items-center justify-between mb-8">
-                            <h2 class="text-2xl font-bold text-gray-900 font-serif"><?php esc_html_e( 'Recent Articles', 'ansar-community-blog' ); ?></h2>
+                            <h2 class="text-2xl font-bold text-gray-900 font-serif" data-ansar-recent-heading><?php esc_html_e( 'Recent Articles', 'ansar-community-blog' ); ?></h2>
                         </div>
 
                         <div class="ansar-blog-recent" data-featured-id="<?php echo esc_attr( $featured_id ); ?>" data-loaded="<?php echo esc_attr( count( $recent_articles ) ); ?>">
